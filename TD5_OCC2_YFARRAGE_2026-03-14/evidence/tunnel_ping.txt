@@ -1,0 +1,15 @@
+PING 10.10.20.10 (10.10.20.10) 56(84) bytes of data.
+64 bytes from 10.10.20.10: icmp_seq=1 ttl=62 time=2.71 ms
+64 bytes from 10.10.20.10: icmp_seq=2 ttl=62 time=3.00 ms
+64 bytes from 10.10.20.10: icmp_seq=3 ttl=62 time=6.91 ms
+64 bytes from 10.10.20.10: icmp_seq=4 ttl=62 time=3.23 ms
+64 bytes from 10.10.20.10: icmp_seq=5 ttl=62 time=3.02 ms
+64 bytes from 10.10.20.10: icmp_seq=6 ttl=62 time=3.07 ms
+64 bytes from 10.10.20.10: icmp_seq=7 ttl=62 time=2.89 ms
+64 bytes from 10.10.20.10: icmp_seq=8 ttl=62 time=3.15 ms
+64 bytes from 10.10.20.10: icmp_seq=9 ttl=62 time=2.95 ms
+64 bytes from 10.10.20.10: icmp_seq=10 ttl=62 time=16.7 ms
+
+--- 10.10.20.10 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9014ms
+rtt min/avg/max/mdev = 2.707/4.766/16.741/4.160 ms

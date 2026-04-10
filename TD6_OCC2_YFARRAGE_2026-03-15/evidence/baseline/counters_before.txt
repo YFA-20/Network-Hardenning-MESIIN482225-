@@ -1,0 +1,31 @@
+# Counters BEFORE tests — gw-fw
+# Captured: 2026-03-05, before any test traffic
+# Command: sudo nft list ruleset > /tmp/counters_before.txt
+# ============================================================
+# All counters at 0: confirms clean baseline before test run
+
+table inet filter {
+	chain forward {
+		type filter hook forward priority filter; policy drop;
+		ct state established,related counter packets 0 bytes 0 accept
+		ip saddr 10.10.10.0/24 ip daddr 10.10.20.10 tcp dport 80 counter packets 0 bytes 0 accept
+		ip saddr 10.10.10.0/24 ip daddr 10.10.20.10 tcp dport 22 counter packets 0 bytes 0 accept
+		ip saddr 10.10.10.0/24 ip daddr 10.10.20.0/24 icmp type echo-request limit rate 5/second counter packets 0 bytes 0 accept
+		counter packets 0 bytes 0 log prefix "NFT_FWD_DENY " limit rate 10/minute
+	}
+
+	chain input {
+		type filter hook input priority filter; policy drop;
+		iif "lo" counter packets 0 bytes 0 accept
+		ct state established,related counter packets 0 bytes 0 accept
+		ip saddr 10.10.10.0/24 tcp dport 22 counter packets 0 bytes 0 accept
+		ip saddr 89.30.39.100 tcp dport 22 counter packets 0 bytes 0 accept
+		ip saddr 10.10.10.0/24 icmp type echo-request counter packets 0 bytes 0 accept
+		ip saddr 92.184.117.191 tcp dport 22 counter packets 0 bytes 0 accept
+		counter packets 0 bytes 0 log prefix "NFT_IN_DENY " limit rate 10/minute
+	}
+
+	chain output {
+		type filter hook output priority filter; policy accept;
+	}
+}

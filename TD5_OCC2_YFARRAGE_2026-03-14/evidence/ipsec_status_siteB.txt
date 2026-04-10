@@ -1,0 +1,21 @@
+Status of IKE charon daemon (strongSwan 5.9.5, Linux 6.8.0-1046-aws, x86_64):
+  uptime: 39 minutes, since Mar 14 12:01:10 2026
+  malloc: sbrk 3211264, mmap 0, used 1406336, free 1804928
+  worker threads: 11 of 16 idle, 5/0/0/0 working, job queue: 0/0/0/0, scheduled: 3
+  loaded plugins: charon aesni aes rc2 sha2 sha1 md5 mgf1 random nonce x509 revocation constraints pubkey pkcs1 pkcs7 pkcs8 pkcs12 pgp dnskey sshkey pem openssl fips-prf gmp agent xcbc hmac gcm drbg attr kernel-netlink resolve socket-default connmark forecast farp stroke updown eap-identity eap-aka eap-md5 eap-gtc eap-mschapv2 eap-dynamic eap-radius eap-tls eap-ttls eap-peap eap-tnc xauth-generic xauth-eap xauth-pam tnc-tnccs dhcp lookip error-notify certexpire led addrblock unity counters
+Listening IP addresses:
+  10.10.20.4
+  10.10.20.100
+  10.10.99.4
+Connections:
+site-to-site:  10.10.99.4...98.66.160.46  IKEv2
+site-to-site:   local:  [35.181.66.138] uses pre-shared key authentication
+site-to-site:   remote: [98.66.160.46] uses pre-shared key authentication
+site-to-site:   child:  10.10.20.0/24 === 10.10.10.0/24 TUNNEL
+Security Associations (1 up, 0 connecting):
+site-to-site[1]: ESTABLISHED 39 minutes ago, 10.10.99.4[35.181.66.138]...98.66.160.46[98.66.160.46]
+site-to-site[1]: IKEv2 SPIs: 853e1a3968c78fd8_i* dbe533ea25f4bf2b_r, pre-shared key reauthentication in 2 hours
+site-to-site[1]: IKE proposal: AES_CBC_256/HMAC_SHA2_256_128/PRF_HMAC_SHA2_256/MODP_2048
+site-to-site{1}:  INSTALLED, TUNNEL, reqid 1, ESP in UDP SPIs: c99d2fbf_i cab7e97e_o
+site-to-site{1}:  AES_CBC_256/HMAC_SHA2_256_128, 1176 bytes_i (14 pkts, 1500s ago), 1176 bytes_o (14 pkts, 1500s ago), rekeying in 2 minutes
+site-to-site{1}:   10.10.20.0/24 === 10.10.10.0/24

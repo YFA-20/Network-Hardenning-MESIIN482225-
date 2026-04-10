@@ -1,0 +1,36 @@
+# TD4 — Command log (reproducible steps)
+# All commands run from azureuser@kali (10.10.10.10) unless noted
+
+## Certificate generation (on srv-web)
+sudo mkdir -p /etc/nginx/certs
+sudo openssl req -x509 -newkey rsa:2048 -days 7 -nodes \
+  -subj "/CN=td4.local" \
+  -keyout /etc/nginx/certs/server.key \
+  -out /etc/nginx/certs/server.crt
+
+## Capture cert info (on srv-web)
+sudo openssl x509 -in /etc/nginx/certs/server.crt -noout -text > /tmp/cert_info_before.txt
+
+## Deploy baseline config and verify
+sudo nginx -t && sudo systemctl reload nginx
+
+## TLS check — curl verbose (from kali)
+curl -vk https://10.10.20.10/ 2>&1 | head -30
+
+## Baseline TLS scan — sslscan (from kali)
+sslscan 10.10.20.10:443 | tee /tmp/sslscan_before.txt
+
+## Deploy hardened config (on srv-web)
+sudo nginx -t && sudo systemctl reload nginx
+
+## Hardened TLS scan — sslscan (from kali)
+sslscan 10.10.20.10:443 | tee /tmp/sslscan_after.txt
+
+## HSTS verification (from kali)
+curl -vk https://10.10.20.10 2>&1 | grep -i strict
+
+## Rate limit test — 20 parallel requests (from kali)
+for i in $(seq 1 20); do curl -sk -o /dev/null -w "%{http_code}\n" https://10.10.20.10/api/ & done; wait
+
+## Save rate limit log (on srv-web)
+sudo tail -30 /var/log/nginx/access.log > /tmp/rate_limit_test.txt

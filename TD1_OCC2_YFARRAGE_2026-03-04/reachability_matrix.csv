@@ -1,0 +1,9 @@
+ID,Source zone,Source asset,Destination zone,Destination asset,Proto,Port,Purpose,Owner,Status
+F01,LAN,client,DMZ,srv-web,TCP,80,HTTP application test,lab,ALLOW
+F02,LAN,client,DMZ,srv-web,TCP,22,Remote admin SSH,admin,ALLOW — restrict by source IP
+F03,LAN,client,LAN,gw-fw,TCP,22,Remote admin SSH to gateway,admin,ALLOW — restrict by source IP
+F04,External,admin-pc,LAN,gw-fw,TCP,22,SSH admin access from physical PC,admin,ALLOW — restrict by source IP
+F05,External,admin-pc,DMZ,srv-web,TCP,22,SSH admin access via ProxyJump,admin,ALLOW — via gw-fw only
+F06,LAN,client,DMZ,srv-web,ICMP,,Connectivity check,lab,REVIEW
+F07,DMZ,srv-web,LAN,client,TCP,,Response traffic (stateful),auto,ALLOW — stateful
+F08,any,any,any,any,any,any,Default deny,security,DENY — log

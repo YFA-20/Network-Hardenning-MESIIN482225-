@@ -1,0 +1,125 @@
+COMMANDS LOG — TD3 Network Hardening
+=====================================
+Group: OCC2 | Student: Youssouf FARRAGE | Date: 2026-03-06/08 | Platform: Microsoft Azure
+
+All commands executed in chronological order with context and purpose.
+
+================================================================================
+PART A — SURICATA SETUP & VISIBILITY
+================================================================================
+
+[2026-03-06 ~08:40] Verify Suricata version (pre-installed on gw-fw)
+  azureuser@gw-fw:~$ suricata --build-info | head -2
+  Result: Suricata version 6.0.4 RELEASE
+
+[2026-03-06 ~08:41] Verify HOME_NET configuration
+  azureuser@gw-fw:~$ sudo grep "HOME_NET" /etc/suricata/suricata.yaml | head -1
+  Result: HOME_NET: "[10.10.10.0/24,10.10.20.0/24]"
+
+[2026-03-06 ~08:42] Add eth1 (DMZ) to af-packet config (was eth0 only)
+  # Python script to insert eth1 block before default-interface section
+  # Result: eth0 (cluster-id:99) + eth1 (cluster-id:98) both monitored
+
+[2026-03-06 ~08:43] Fix default-rule-path (was /etc/suricata/rules, suricata-update writes to /var/lib/suricata/rules)
+  azureuser@gw-fw:~$ sudo sed -i 's|default-rule-path: /etc/suricata/rules|default-rule-path: /var/lib/suricata/rules|' /etc/suricata/suricata.yaml
+
+[2026-03-06 ~08:44] Load ET Open signatures
+  azureuser@gw-fw:~$ sudo suricata-update
+  Result: 48,795 rules downloaded and installed to /var/lib/suricata/rules/suricata.rules
+
+[2026-03-06 ~08:47] Start Suricata
+  azureuser@gw-fw:~$ sudo systemctl restart suricata
+  azureuser@gw-fw:~$ sudo systemctl status suricata
+  Result: active (running) since Fri 2026-03-06 08:47:31 UTC
+
+[2026-03-06 ~09:35] Confirm signatures loaded and both interfaces monitored
+  azureuser@gw-fw:~$ sudo grep "rule files processed\|AFP capture" /var/log/suricata/suricata.log | tail -3
+  Result: 1 rule files processed. 48795 rules successfully loaded, 0 rules failed
+          All AFP capture threads are running.
+
+[2026-03-06 ~09:39] VISIBILITY TEST — Generate traffic from client (Kali 10.10.10.10)
+  azureuser@kali:~$ curl http://10.10.20.10/
+  Result: HTTP 200 OK (nginx/1.18.0)
+
+  azureuser@kali:~$ ping -c 4 10.10.20.10
+  Result: TTL=63 (confirms routing via gw-fw, decremented from 64)
+
+[2026-03-06 ~09:39] Confirm decoder.pkts increasing (Suricata sees traffic)
+  azureuser@gw-fw:~$ sudo grep "decoder.pkts" /var/log/suricata/stats.log | tail -10
+  Result: 1691 → 1726 → 1796 → 1831 → 1866 → 1979 → 2014 → 2049 → 2133 → 2169
+  Saved to: evidence/visibility_proof.txt ✓
+
+================================================================================
+PART B — DETERMINISTIC TRIGGER (COMMUNITY RULES)
+================================================================================
+
+[2026-03-06 ~09:53] SCAN TRIGGER — Nmap from client to srv-web
+  azureuser@kali:~$ sudo nmap -sS -sV -sC 10.10.20.10
+  Note: -sC flag required to trigger NSE User-Agent rule (SID 2024364)
+        -sS alone is insufficient; NSE scripts inject "Nmap Scripting Engine" HTTP UA
+
+[2026-03-06 ~09:54] Check fast.log for alerts
+  azureuser@gw-fw:~$ sudo tail -f /var/log/suricata/fast.log
+  Result: SID 2024364 (ET SCAN Possible Nmap User-Agent Observed) — 29 hits
+          SID 2210059 (SURICATA STREAM pkt seen on wrong thread)  — 49 hits
+          SID 2013504 (ET POLICY APT User-Agent Outbound)         —  6 hits
+          TOTAL: 84 alerts
+
+  azureuser@gw-fw:~$ sudo grep "2024364\|2210059\|2013504" /var/log/suricata/fast.log | sudo tee /tmp/alerts_excerpt_before.txt | wc -l
+  Result: 84
+  Saved to: evidence/alerts_excerpt.txt (before tuning) ✓
+
+================================================================================
+PART C — CUSTOM RULE
+================================================================================
+
+[2026-03-08 ~14:25] Create custom rule for /admin access detection
+  azureuser@gw-fw:~$ sudo tee /var/lib/suricata/rules/local.rules << 'EOF'
+  alert http $HOME_NET any -> $HTTP_SERVERS any (msg:"LOCAL Unauthorized access attempt to /admin"; flow:established,to_server; http.method; content:"GET"; http.uri; content:"/admin"; startswith; sid:9000001; rev:1; priority:1;)
+  EOF
+
+[2026-03-08 ~14:25] Register local.rules in suricata.yaml
+  azureuser@gw-fw:~$ sudo sed -i 's/  - suricata.rules/  - suricata.rules\n  - local.rules/' /etc/suricata/suricata.yaml
+
+[2026-03-08 ~14:27] Restart Suricata and confirm 48796 rules loaded (+1 custom)
+  azureuser@gw-fw:~$ sudo systemctl restart suricata
+  azureuser@gw-fw:~$ sudo grep "rule files processed" /var/log/suricata/suricata.log | tail -1
+  Result: 2 rule files processed. 48796 rules successfully loaded, 0 rules failed
+
+[2026-03-08 ~14:33] POSITIVE TEST — curl /admin from client
+  azureuser@kali:~$ curl http://10.10.20.10/admin
+  Result: nginx 404 Not Found (path does not exist, but HTTP request was made)
+
+  azureuser@gw-fw:~$ sudo grep "9000001\|LOCAL" /var/log/suricata/fast.log
+  Result: 03/08/2026-14:33:36.916448 [**] [1:9000001:1] LOCAL Unauthorized access attempt to /admin
+          {TCP} 10.10.10.10:42666 -> 10.10.20.10:80   ← ALERT TRIGGERED ✓
+
+[2026-03-08 ~14:34] NEGATIVE TEST — curl / from client (no /admin)
+  azureuser@kali:~$ curl http://10.10.20.10/
+  Result: HTTP 200 OK
+
+  azureuser@gw-fw:~$ sudo grep "9000001" /var/log/suricata/fast.log | wc -l
+  Result: 1 (count unchanged — no new alert for GET /) ✓
+
+================================================================================
+PART D — TUNING ACTION
+================================================================================
+
+[2026-03-06 ~10:00] Configure threshold-file in suricata.yaml (was commented out)
+  azureuser@gw-fw:~$ sudo sed -i 's|# threshold-file: /etc/suricata/threshold.config|threshold-file: /etc/suricata/threshold.conf|' /etc/suricata/suricata.yaml
+
+[2026-03-06 ~10:00] Create suppress rule for SID 2210059
+  azureuser@gw-fw:~$ echo "suppress gen_id 1, sig_id 2210059" | sudo tee /etc/suricata/threshold.conf
+
+[2026-03-06 ~10:18] Restart and confirm threshold loaded
+  azureuser@gw-fw:~$ sudo systemctl restart suricata
+  azureuser@gw-fw:~$ sudo grep "Threshold config" /var/log/suricata/suricata.log | tail -1
+  Result: Threshold config parsed: 1 rule(s) found ✓
+
+[2026-03-06 ~10:20] AFTER TUNING SCAN — same nmap command
+  azureuser@kali:~$ sudo nmap -sS -sV -sC 10.10.20.10
+
+[2026-03-06 ~10:20] Count AFTER
+  azureuser@gw-fw:~$ sudo grep -c "2024364" /var/log/suricata/fast.log → 29
+  azureuser@gw-fw:~$ sudo grep -c "2210059" /var/log/suricata/fast.log → 0
+  Saved to: evidence/before_after_counts.txt ✓

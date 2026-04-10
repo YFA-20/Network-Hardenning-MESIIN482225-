@@ -1,0 +1,50 @@
+SURICATA CONFIGURATION EXTRACT — gw-fw
+======================================
+File: /etc/suricata/suricata.yaml
+Engine: Suricata 6.0.4 RELEASE
+Date: 2026-03-06
+
+--- ADDRESS GROUPS ---
+HOME_NET: "[10.10.10.0/24,10.10.20.0/24]"
+EXTERNAL_NET: "!$HOME_NET"
+HTTP_SERVERS: "$HOME_NET"
+
+--- RULE PATH ---
+default-rule-path: /var/lib/suricata/rules
+
+rule-files:
+  - suricata.rules       # ET Open (~48,795 signatures via suricata-update)
+  - local.rules          # Custom rules (sid:9000001+)
+
+--- THRESHOLD ---
+threshold-file: /etc/suricata/threshold.conf
+
+--- AF-PACKET (dual interface) ---
+af-packet:
+  - interface: eth0
+    cluster-id: 99
+    cluster-type: cluster_flow
+    defrag: yes
+
+  - interface: eth1
+    cluster-id: 98
+    cluster-type: cluster_flow
+    defrag: yes
+
+--- OUTPUTS ---
+outputs:
+  - fast:
+      enabled: yes
+      filename: fast.log
+      append: yes
+  - eve-log:
+      enabled: yes
+      filename: eve.json
+  - stats:
+      enabled: yes
+      filename: stats.log
+
+--- SIGNATURES LOADED (from suricata.log, last restart) ---
+8/3/2026 -- 14:25:36 - 2 rule files processed. 48796 rules successfully loaded, 0 rules failed
+8/3/2026 -- 14:17:02 - Threshold config parsed: 1 rule(s) found
+8/3/2026 -- 14:27:24 - All AFP capture threads are running.

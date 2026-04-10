@@ -1,0 +1,58 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            54:59:49:0a:91:f1:db:cb:8c:02:8e:fc:d1:8f:27:e7:4e:e3:dc:3a
+        Signature Algorithm: sha256WithRSAEncryption
+        Issuer: CN = td4.local
+        Validity
+            Not Before: Mar 11 12:45:21 2026 GMT
+            Not After : Mar 18 12:45:21 2026 GMT
+        Subject: CN = td4.local
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:ae:a1:97:2e:d6:6b:57:e2:f8:91:4d:07:cf:9b:
+                    3a:8c:fa:02:0e:20:92:7e:d0:56:38:ef:3c:9a:fe:
+                    13:01:14:8e:2f:b0:ee:69:78:f2:74:1b:e1:f1:59:
+                    8e:42:a6:5d:8a:3b:89:f8:b5:a0:44:7d:4a:c3:8c:
+                    ed:8f:01:9d:1b:aa:a8:a1:bb:87:1d:da:97:f0:8d:
+                    3d:3a:10:ef:88:9b:2a:c3:53:b6:5c:cd:6d:e5:df:
+                    56:8c:de:59:c2:99:ae:03:9a:c1:d7:43:3f:bf:17:
+                    4e:1c:4c:05:95:bd:6f:63:ed:19:bb:73:89:1d:b6:
+                    2b:fa:65:8f:ca:b1:bd:e4:0a:2f:63:46:fc:55:49:
+                    7b:54:e2:16:79:d2:1c:a6:79:b0:93:df:9d:25:42:
+                    e1:35:93:90:35:a2:6e:39:49:e8:52:73:9d:b4:86:
+                    14:9c:0e:73:0d:dc:c1:cd:90:6e:d7:98:93:c2:31:
+                    cc:c0:4d:16:a6:a0:18:2e:c7:8d:d2:7e:64:07:89:
+                    c2:d0:d8:02:97:4d:e6:a7:bb:7d:ae:7f:9b:74:ce:
+                    2a:ac:f0:83:27:38:aa:d7:7e:07:f8:a0:4e:50:26:
+                    34:09:ee:8c:3e:81:4c:47:f9:92:b7:fa:35:83:2f:
+                    c8:43:8b:db:8b:3f:cd:5b:a8:16:a8:1c:6d:6b:c6:
+                    19:85
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Subject Key Identifier: 
+                75:70:D9:63:5C:E5:79:1D:AA:3B:9A:9A:A7:B0:63:95:E7:D7:FC:0C
+            X509v3 Authority Key Identifier: 
+                75:70:D9:63:5C:E5:79:1D:AA:3B:9A:9A:A7:B0:63:95:E7:D7:FC:0C
+            X509v3 Basic Constraints: critical
+                CA:TRUE
+    Signature Algorithm: sha256WithRSAEncryption
+    Signature Value:
+        20:8a:e4:de:d0:5f:43:42:64:02:d8:15:a2:a0:4b:d8:c6:3b:
+        71:25:30:6a:e4:ce:ac:4f:61:fd:fd:d9:13:f9:e2:36:43:fc:
+        05:4d:3a:20:86:28:9c:69:00:28:ef:58:f7:8e:f3:c3:5a:47:
+        69:dc:0c:68:83:ef:f5:3c:cb:a4:8b:d3:cd:44:88:d5:a2:c5:
+        ed:99:33:be:fe:57:86:5b:ca:ef:11:1d:d9:bc:3a:80:df:ab:
+        24:47:b7:97:1d:af:eb:bd:6e:e2:75:e2:46:18:d4:c6:12:db:
+        e1:1d:0a:28:90:d0:00:63:16:f3:a1:24:44:9b:b1:7b:e3:8d:
+        c9:7b:76:7d:de:d9:a0:1b:9f:ff:3b:d4:55:01:ff:db:66:aa:
+        7d:2f:74:18:a6:73:c5:0b:97:81:9a:2a:79:40:09:08:4a:30:
+        62:35:b4:e5:cb:98:cc:8d:91:4f:83:12:e5:42:92:22:6e:ef:
+        4a:ce:13:06:db:41:4f:85:2a:d8:4a:8e:a3:eb:ec:18:6c:03:
+        94:4e:e3:d3:3b:bb:e9:81:8d:eb:fa:bc:4c:ba:de:b3:7e:14:
+        32:a0:49:2b:fb:15:9a:d6:be:ab:fc:81:db:bc:30:6c:f6:70:
+        c9:09:7d:5b:a1:15:8c:cb:d2:49:ab:d7:6e:47:61:25:7e:dc:
+        e2:4c:fa:78

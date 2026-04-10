@@ -1,0 +1,20 @@
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on eth1, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+12:15:47.489301 IP 10.10.99.5.4500 > 35.181.66.138.4500: UDP-encap: ESP(spi=0xc99d2fbf,seq=0x8), length 136
+12:15:47.491580 IP 35.181.66.138.4500 > 10.10.99.5.4500: UDP-encap: ESP(spi=0xcab7e97e,seq=0x8), length 136
+12:15:48.490713 IP 10.10.99.5.4500 > 35.181.66.138.4500: UDP-encap: ESP(spi=0xc99d2fbf,seq=0x9), length 136
+12:15:48.492783 IP 35.181.66.138.4500 > 10.10.99.5.4500: UDP-encap: ESP(spi=0xcab7e97e,seq=0x9), length 136
+12:15:49.491949 IP 10.10.99.5.4500 > 35.181.66.138.4500: UDP-encap: ESP(spi=0xc99d2fbf,seq=0xa), length 136
+12:15:49.493811 IP 35.181.66.138.4500 > 10.10.99.5.4500: UDP-encap: ESP(spi=0xcab7e97e,seq=0xa), length 136
+12:15:50.495040 IP 10.10.99.5.4500 > 35.181.66.138.4500: UDP-encap: ESP(spi=0xc99d2fbf,seq=0xb), length 136
+12:15:50.497251 IP 35.181.66.138.4500 > 10.10.99.5.4500: UDP-encap: ESP(spi=0xcab7e97e,seq=0xb), length 136
+12:15:51.495384 IP 10.10.99.5.4500 > 35.181.66.138.4500: UDP-encap: ESP(spi=0xc99d2fbf,seq=0xc), length 136
+12:15:51.497307 IP 35.181.66.138.4500 > 10.10.99.5.4500: UDP-encap: ESP(spi=0xcab7e97e,seq=0xc), length 136
+12:15:52.497558 IP 10.10.99.5.4500 > 35.181.66.138.4500: UDP-encap: ESP(spi=0xc99d2fbf,seq=0xd), length 136
+12:15:52.499506 IP 35.181.66.138.4500 > 10.10.99.5.4500: UDP-encap: ESP(spi=0xcab7e97e,seq=0xd), length 136
+12:15:53.498730 IP 10.10.99.5.4500 > 35.181.66.138.4500: UDP-encap: ESP(spi=0xc99d2fbf,seq=0xe), length 136
+12:15:53.500653 IP 35.181.66.138.4500 > 10.10.99.5.4500: UDP-encap: ESP(spi=0xcab7e97e,seq=0xe), length 136
+12:16:13.316559 IP 35.181.66.138.4500 > 10.10.99.5.4500: isakmp-nat-keep-alive
+15 packets captured
+16 packets received by filter
+0 packets dropped by kernel

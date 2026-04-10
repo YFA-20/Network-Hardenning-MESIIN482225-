@@ -1,0 +1,84 @@
+03/06/2026-09:50:17.272048  [**] [1:2013504:6] ET POLICY GNU/Linux APT User-Agent Outbound likely related to package management [**] [Classification: Not Suspicious Traffic] [Priority: 3] {TCP} 10.10.10.4:60952 -> 51.11.236.225:80
+03/06/2026-09:50:17.273844  [**] [1:2013504:6] ET POLICY GNU/Linux APT User-Agent Outbound likely related to package management [**] [Classification: Not Suspicious Traffic] [Priority: 3] {TCP} 10.10.10.4:60952 -> 51.11.236.225:80
+03/06/2026-09:50:17.283993  [**] [1:2013504:6] ET POLICY GNU/Linux APT User-Agent Outbound likely related to package management [**] [Classification: Not Suspicious Traffic] [Priority: 3] {TCP} 10.10.10.4:60952 -> 51.11.236.225:80
+03/06/2026-09:50:17.307559  [**] [1:2013504:6] ET POLICY GNU/Linux APT User-Agent Outbound likely related to package management [**] [Classification: Not Suspicious Traffic] [Priority: 3] {TCP} 10.10.10.4:60952 -> 51.11.236.225:80
+03/06/2026-09:50:18.175805  [**] [1:2013504:6] ET POLICY GNU/Linux APT User-Agent Outbound likely related to package management [**] [Classification: Not Suspicious Traffic] [Priority: 3] {TCP} 10.10.10.4:60952 -> 51.11.236.225:80
+03/06/2026-09:50:18.449417  [**] [1:2013504:6] ET POLICY GNU/Linux APT User-Agent Outbound likely related to package management [**] [Classification: Not Suspicious Traffic] [Priority: 3] {TCP} 10.10.10.4:60952 -> 51.11.236.225:80
+03/06/2026-09:53:57.179838  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:56908 -> 10.10.20.10:443
+03/06/2026-09:53:57.179922  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:56908 -> 10.10.20.10:80
+03/06/2026-09:53:57.252028  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:57164 -> 10.10.20.10:22
+03/06/2026-09:53:57.252093  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:57164 -> 10.10.20.10:80
+03/06/2026-09:53:58.453972  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:57164 -> 10.10.20.10:443
+03/06/2026-09:53:59.757882  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:57169 -> 10.10.20.10:80
+03/06/2026-09:54:01.063328  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:57171 -> 10.10.20.10:80
+03/06/2026-09:54:02.326601  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:36550 -> 10.10.20.10:22
+03/06/2026-09:54:02.326622  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58306 -> 10.10.20.10:80
+03/06/2026-09:54:08.361025  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58322 -> 10.10.20.10:80
+03/06/2026-09:54:08.361166  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58326 -> 10.10.20.10:80
+03/06/2026-09:54:08.361132  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58338 -> 10.10.20.10:80
+03/06/2026-09:54:08.361734  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58344 -> 10.10.20.10:80
+03/06/2026-09:54:08.362394  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58348 -> 10.10.20.10:80
+03/06/2026-09:54:08.364352  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58368 -> 10.10.20.10:80
+03/06/2026-09:54:08.364318  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58358 -> 10.10.20.10:80
+03/06/2026-09:54:08.364833  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58380 -> 10.10.20.10:80
+03/06/2026-09:54:08.366071  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58394 -> 10.10.20.10:80
+03/06/2026-09:54:08.366434  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:36552 -> 10.10.20.10:22
+03/06/2026-09:54:08.368097  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58408 -> 10.10.20.10:80
+03/06/2026-09:54:08.368097  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58416 -> 10.10.20.10:80
+03/06/2026-09:54:08.368491  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58426 -> 10.10.20.10:80
+03/06/2026-09:54:08.369037  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:36556 -> 10.10.20.10:22
+03/06/2026-09:54:08.373860  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58348 -> 10.10.20.10:80
+03/06/2026-09:54:08.373894  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58338 -> 10.10.20.10:80
+03/06/2026-09:54:08.374098  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58426 -> 10.10.20.10:80
+03/06/2026-09:54:08.374126  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58358 -> 10.10.20.10:80
+03/06/2026-09:54:08.373697  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58322 -> 10.10.20.10:80
+03/06/2026-09:54:08.373791  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58326 -> 10.10.20.10:80
+03/06/2026-09:54:08.373929  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58344 -> 10.10.20.10:80
+03/06/2026-09:54:08.374085  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58368 -> 10.10.20.10:80
+03/06/2026-09:54:08.374085  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58416 -> 10.10.20.10:80
+03/06/2026-09:54:08.374085  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58394 -> 10.10.20.10:80
+03/06/2026-09:54:08.374452  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58408 -> 10.10.20.10:80
+03/06/2026-09:54:08.442697  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58432 -> 10.10.20.10:80
+03/06/2026-09:54:08.444538  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58442 -> 10.10.20.10:80
+03/06/2026-09:54:08.444647  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58458 -> 10.10.20.10:80
+03/06/2026-09:54:08.445227  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58474 -> 10.10.20.10:80
+03/06/2026-09:54:08.497556  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58482 -> 10.10.20.10:80
+03/06/2026-09:54:08.498563  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58442 -> 10.10.20.10:80
+03/06/2026-09:54:08.499055  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58458 -> 10.10.20.10:80
+03/06/2026-09:54:08.499029  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58474 -> 10.10.20.10:80
+03/06/2026-09:54:08.500144  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58432 -> 10.10.20.10:80
+03/06/2026-09:54:08.549455  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:36558 -> 10.10.20.10:22
+03/06/2026-09:54:08.550041  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58482 -> 10.10.20.10:80
+03/06/2026-09:54:08.600393  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58484 -> 10.10.20.10:80
+03/06/2026-09:54:08.601552  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58488 -> 10.10.20.10:80
+03/06/2026-09:54:08.653785  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58490 -> 10.10.20.10:80
+03/06/2026-09:54:08.654843  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58484 -> 10.10.20.10:80
+03/06/2026-09:54:08.655308  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58488 -> 10.10.20.10:80
+03/06/2026-09:54:08.707042  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58490 -> 10.10.20.10:80
+03/06/2026-09:54:08.757318  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58502 -> 10.10.20.10:80
+03/06/2026-09:54:08.757440  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58510 -> 10.10.20.10:80
+03/06/2026-09:54:08.757555  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58522 -> 10.10.20.10:80
+03/06/2026-09:54:08.808416  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:36564 -> 10.10.20.10:22
+03/06/2026-09:54:08.810515  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58502 -> 10.10.20.10:80
+03/06/2026-09:54:08.810921  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58510 -> 10.10.20.10:80
+03/06/2026-09:54:08.810948  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58522 -> 10.10.20.10:80
+03/06/2026-09:54:08.912583  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58534 -> 10.10.20.10:80
+03/06/2026-09:54:08.964784  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58540 -> 10.10.20.10:80
+03/06/2026-09:54:08.965628  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58534 -> 10.10.20.10:80
+03/06/2026-09:54:09.018546  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58540 -> 10.10.20.10:80
+03/06/2026-09:54:09.069988  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58550 -> 10.10.20.10:80
+03/06/2026-09:54:09.069963  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:36576 -> 10.10.20.10:22
+03/06/2026-09:54:09.122494  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58554 -> 10.10.20.10:80
+03/06/2026-09:54:09.123263  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58550 -> 10.10.20.10:80
+03/06/2026-09:54:09.175413  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58554 -> 10.10.20.10:80
+03/06/2026-09:54:09.226064  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58560 -> 10.10.20.10:80
+03/06/2026-09:54:09.277833  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58560 -> 10.10.20.10:80
+03/06/2026-09:54:09.382278  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58564 -> 10.10.20.10:80
+03/06/2026-09:54:09.433972  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:36582 -> 10.10.20.10:22
+03/06/2026-09:54:09.436922  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58564 -> 10.10.20.10:80
+03/06/2026-09:54:09.536567  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:58580 -> 10.10.20.10:80
+03/06/2026-09:54:09.589503  [**] [1:2024364:4] ET SCAN Possible Nmap User-Agent Observed [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 10.10.10.10:58580 -> 10.10.20.10:80
+03/06/2026-09:54:09.692266  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:36584 -> 10.10.20.10:22
+03/06/2026-09:54:09.945587  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:36600 -> 10.10.20.10:22
+03/06/2026-09:54:13.397702  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:38322 -> 10.10.20.10:80
+03/06/2026-09:54:13.407891  [**] [1:2210059:1] SURICATA STREAM pkt seen on wrong thread [**] [Classification: (null)] [Priority: 3] {TCP} 10.10.10.10:38328 -> 10.10.20.10:80

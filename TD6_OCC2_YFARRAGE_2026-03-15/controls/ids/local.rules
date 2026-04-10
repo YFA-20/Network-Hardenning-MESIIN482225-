@@ -1,0 +1,1 @@
+alert http $HOME_NET any -> $HTTP_SERVERS any (msg:"LOCAL Unauthorized access attempt to /admin"; flow:established,to_server; http.method; content:"GET"; http.uri; content:"/admin"; startswith; sid:9000001; rev:1; priority:1;)

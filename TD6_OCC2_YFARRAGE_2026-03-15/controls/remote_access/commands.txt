@@ -1,0 +1,82 @@
+# TD5 — Verification Commands
+# Run order: Phase 0 → Phase 1 → Phase 2
+
+## ─── Phase 0: Topology Verification ───────────────────────────────────────
+
+# [siteA-gw] Verify WAN interface IP
+ip a s eth1
+# Expected: inet 10.10.99.5/24
+
+# [siteA-gw] Verify LAN interface IP
+ip a s eth0
+# Expected: inet 10.10.10.4/24 (or 10.10.10.1 depending on Azure assignment)
+
+# [siteA-gw] Verify policy routing rule
+ip rule show
+# Expected: 100: from 10.10.99.5 lookup 101
+
+# [siteA-gw] Verify routing table 101
+ip route show table 101
+# Expected: default via 10.10.99.1 dev eth1
+
+# [siteA-gw] Ping siteB-gw WAN (pre-tunnel connectivity check)
+ping -c 2 10.10.99.4
+# Expected: 2/2 received
+
+# [siteA-client → siteB-srv] Ping (requires tunnel)
+ping -c 4 10.10.20.10
+# Expected: 4/4 received, TTL=62
+
+
+## ─── Phase 1: SSH Hardening ────────────────────────────────────────────────
+
+# [siteB-srv] Check effective sshd config
+sudo grep -rE '^(PasswordAuthentication|PermitRootLogin|AllowUsers|PubkeyAuthentication|MaxAuthTries|LoginGraceTime)' \
+  /etc/ssh/sshd_config /etc/ssh/sshd_config.d/
+# Expected:
+# /etc/ssh/sshd_config.d/60-cloudimg-settings.conf:PasswordAuthentication no
+# /etc/ssh/sshd_config.d/99-td5-hardening.conf:PermitRootLogin no
+# /etc/ssh/sshd_config.d/99-td5-hardening.conf:AllowUsers awsuser
+# /etc/ssh/sshd_config.d/99-td5-hardening.conf:PubkeyAuthentication yes
+# /etc/ssh/sshd_config.d/99-td5-hardening.conf:MaxAuthTries 3
+# /etc/ssh/sshd_config.d/99-td5-hardening.conf:LoginGraceTime 30
+
+# [siteA-client] Positive test — key login
+ssh -i ~/.ssh/nh_lab_key awsuser@10.10.20.10 "echo SSH_KEY_OK"
+# Expected: SSH_KEY_OK
+
+# [siteA-client] Negative test 1 — password auth (must fail)
+ssh -o PubkeyAuthentication=no awsuser@10.10.20.10
+# Expected: awsuser@10.10.20.10: Permission denied (publickey).
+
+# [siteA-client] Negative test 2 — root login (must fail)
+ssh -i ~/.ssh/nh_lab_key root@10.10.20.10
+# Expected: root@10.10.20.10: Permission denied (publickey).
+
+# [siteB-srv] Collect auth log
+sudo tail -n 50 /var/log/auth.log | grep sshd | tee ~/td5-artifacts/authlog_excerpt.txt
+
+
+## ─── Phase 2: IPsec VPN ────────────────────────────────────────────────────
+
+# [siteA-gw + siteB-gw] Start tunnel
+sudo ipsec restart
+
+# [siteA-gw] Check tunnel status
+sudo ipsec statusall
+# Expected: ESTABLISHED ... 10.10.10.0/24 === 10.10.20.0/24
+
+# [siteA-gw] Save status
+sudo ipsec statusall | tee ~/td5-artifacts/ipsec_status.txt
+
+# [siteA-gw] Capture ESP-in-UDP on WAN interface
+sudo tcpdump -i eth1 -c 15 'udp port 500 or udp port 4500 or esp' \
+  | tee ~/td5-artifacts/esp_capture.txt
+# (trigger traffic from siteA-client simultaneously)
+
+# [siteA-client] Tunnel ping with capture
+ping -c 10 10.10.20.10 | tee ~/td5-artifacts/tunnel_ping.txt
+# Expected: 10/10 received, TTL=62, avg ~5ms
+
+# [siteA-gw] Save nftables ruleset
+sudo nft list ruleset | tee ~/td5-artifacts/nftables_ruleset.txt

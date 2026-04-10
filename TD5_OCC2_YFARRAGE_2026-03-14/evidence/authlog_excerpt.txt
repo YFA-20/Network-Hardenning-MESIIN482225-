@@ -1,0 +1,40 @@
+Mar 14 11:04:06 siteB-srv sshd[15409]: Connection closed by authenticating user root 157.245.99.15 port 38168 [preauth]
+Mar 14 11:05:31 siteB-srv sshd[15411]: Connection closed by authenticating user root 157.245.99.15 port 46276 [preauth]
+Mar 14 11:06:49 siteB-srv sshd[15416]: Connection closed by authenticating user root 157.245.99.15 port 51970 [preauth]
+Mar 14 11:08:04 siteB-srv sshd[15421]: Connection closed by authenticating user root 157.245.99.15 port 50698 [preauth]
+Mar 14 11:16:04 siteB-srv sshd[15510]: error: kex_exchange_identification: Connection closed by remote host
+Mar 14 11:16:04 siteB-srv sshd[15510]: Connection closed by 52.14.202.153 port 48614
+Mar 14 11:16:05 siteB-srv sshd[15397]: Received disconnect from 10.10.20.4 port 49478:11: disconnected by user
+Mar 14 11:16:05 siteB-srv sshd[15397]: Disconnected from user awsuser 10.10.20.4 port 49478
+Mar 14 11:16:05 siteB-srv sshd[15310]: pam_unix(sshd:session): session closed for user awsuser
+Mar 14 11:16:48 siteB-srv sshd[15513]: Accepted publickey for awsuser from 10.10.20.4 port 34706 ssh2: ED25519 SHA256:TJd0H81dkHZCDKn//p8lGWRnsbNRv/dsDkMBlo7mQg4
+Mar 14 11:16:48 siteB-srv sshd[15513]: pam_unix(sshd:session): session opened for user awsuser(uid=1000) by (uid=0)
+Mar 14 11:20:40 siteB-srv sudo:  awsuser : TTY=pts/0 ; PWD=/home/awsuser ; USER=root ; COMMAND=/usr/bin/grep -E ^(PasswordAuthentication|PermitRootLogin|AllowUsers|PubkeyAuthentication|MaxAuthTries|LoginGraceTime) /etc/ssh/sshd_config
+Mar 14 11:22:05 siteB-srv sudo:  awsuser : TTY=pts/0 ; PWD=/home/awsuser ; USER=root ; COMMAND=/usr/bin/grep -rE ^(PasswordAuthentication|PermitRootLogin) /etc/ssh/sshd_config.d/
+Mar 14 11:22:33 siteB-srv sudo:  awsuser : TTY=pts/0 ; PWD=/home/awsuser ; USER=root ; COMMAND=/usr/bin/grep -rE ^(PasswordAuthentication|PermitRootLogin) /etc/ssh/sshd_config.d/
+Mar 14 11:24:57 siteB-srv sudo:  awsuser : TTY=pts/0 ; PWD=/home/awsuser ; USER=root ; COMMAND=/usr/bin/tee /etc/ssh/sshd_config.d/99-td5-hardening.conf
+Mar 14 11:25:17 siteB-srv sudo:  awsuser : TTY=pts/0 ; PWD=/home/awsuser ; USER=root ; COMMAND=/usr/sbin/sshd -t
+Mar 14 11:25:25 siteB-srv sshd[7735]: Received signal 15; terminating.
+Mar 14 11:25:25 siteB-srv sshd[15624]: Server listening on 0.0.0.0 port 22.
+Mar 14 11:25:25 siteB-srv sshd[15624]: Server listening on :: port 22.
+Mar 14 11:26:14 siteB-srv sshd[15627]: Accepted publickey for awsuser from 10.10.20.4 port 42440 ssh2: ED25519 SHA256:TJd0H81dkHZCDKn//p8lGWRnsbNRv/dsDkMBlo7mQg4
+Mar 14 11:26:14 siteB-srv sshd[15627]: pam_unix(sshd:session): session opened for user awsuser(uid=1000) by (uid=0)
+Mar 14 11:26:14 siteB-srv sshd[15684]: Received disconnect from 10.10.20.4 port 42440:11: disconnected by user
+Mar 14 11:26:14 siteB-srv sshd[15684]: Disconnected from user awsuser 10.10.20.4 port 42440
+Mar 14 11:26:14 siteB-srv sshd[15627]: pam_unix(sshd:session): session closed for user awsuser
+Mar 14 11:26:34 siteB-srv sshd[15687]: Connection closed by authenticating user awsuser 10.10.20.4 port 50066 [preauth]
+Mar 14 11:26:49 siteB-srv sshd[15689]: User root from 10.10.20.4 not allowed because not listed in AllowUsers
+Mar 14 11:26:49 siteB-srv sshd[15689]: Connection closed by invalid user root 10.10.20.4 port 52010 [preauth]
+Mar 14 11:48:07 siteB-srv sshd[15699]: error: kex_exchange_identification: Connection closed by remote host
+Mar 14 11:48:07 siteB-srv sshd[15699]: Connection closed by 68.183.79.252 port 33120
+Mar 14 11:52:35 siteB-srv sshd[15700]: User root from 68.183.79.252 not allowed because not listed in AllowUsers
+Mar 14 11:52:35 siteB-srv sshd[15700]: Connection closed by invalid user root 68.183.79.252 port 45316 [preauth]
+Mar 14 12:17:48 siteB-srv sshd[15716]: error: kex_exchange_identification: client sent invalid protocol identifier "GET / HTTP/1.1"
+Mar 14 12:17:48 siteB-srv sshd[15716]: banner exchange: Connection from 159.65.179.26 port 36762: invalid format
+Mar 14 12:35:36 siteB-srv sshd[15720]: error: kex_exchange_identification: Connection closed by remote host
+Mar 14 12:35:36 siteB-srv sshd[15720]: Connection closed by 165.227.106.123 port 39438
+Mar 14 12:37:10 siteB-srv sshd[15721]: User root from 165.227.106.123 not allowed because not listed in AllowUsers
+Mar 14 12:37:10 siteB-srv sshd[15721]: Connection closed by invalid user root 165.227.106.123 port 36136 [preauth]
+Mar 14 12:38:16 siteB-srv sshd[15724]: User root from 165.227.106.123 not allowed because not listed in AllowUsers
+Mar 14 12:38:17 siteB-srv sshd[15724]: Connection closed by invalid user root 165.227.106.123 port 46606 [preauth]
+Mar 14 12:38:36 siteB-srv sudo:  awsuser : TTY=pts/0 ; PWD=/home/awsuser ; USER=root ; COMMAND=/usr/bin/grep sshd /var/log/auth.log

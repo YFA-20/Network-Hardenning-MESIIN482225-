@@ -1,0 +1,188 @@
+# TD2 — All Commands Used
+# Author: Youssouf FARRAGE — Group OCC2 | Date: 2026-03-05
+# ============================================================
+# Commands are grouped by phase and host.
+# Executed from: Azure CLI (UDR config) + SSH sessions (nftables + tests)
+# ============================================================
+
+
+## ── PHASE 1: Azure UDR Configuration ──────────────────────────────────────
+## Run from: Azure Cloud Shell / Azure CLI
+
+# Discover existing VNet and subnets
+az network vnet list --query "[].{name:name, rg:resourceGroup}" -o table
+az network vnet subnet list --vnet-name NH-VNet --resource-group NH-RG --query "[].{name:name, prefix:addressPrefix}" -o table
+
+# Create route table for LAN subnet (force LAN→DMZ through gw-fw)
+az network route-table create --name rt-nh-lan --resource-group NH-RG --location westeurope
+
+# Add route: LAN → DMZ via gw-fw DMZ IP (VirtualAppliance = NVA type)
+az network route-table route create \
+  --route-table-name rt-nh-lan \
+  --resource-group NH-RG \
+  --name to-dmz \
+  --address-prefix 10.10.20.0/24 \
+  --next-hop-type VirtualAppliance \
+  --next-hop-ip-address 10.10.20.4
+
+# Associate route table with LAN subnet
+az network vnet subnet update \
+  --vnet-name NH-VNet \
+  --resource-group NH-RG \
+  --name NH-LAN \
+  --route-table rt-nh-lan
+
+# Create route table for DMZ subnet (force DMZ→LAN through gw-fw)
+az network route-table create --name rt-nh-dmz --resource-group NH-RG --location westeurope
+
+# Add route: DMZ → LAN via gw-fw LAN IP
+az network route-table route create \
+  --route-table-name rt-nh-dmz \
+  --resource-group NH-RG \
+  --name to-lan \
+  --address-prefix 10.10.10.0/24 \
+  --next-hop-type VirtualAppliance \
+  --next-hop-ip-address 10.10.10.4
+
+# Associate route table with DMZ subnet
+az network vnet subnet update \
+  --vnet-name NH-VNet \
+  --resource-group NH-RG \
+  --name NH-DMZ \
+  --route-table rt-nh-dmz
+
+# Enable Azure IP Forwarding on gw-fw NICs (required for NVA)
+az network nic update --name nic-gw-fw-lan --resource-group NH-RG --ip-forwarding true
+az network nic update --name nic-gw-fw-dmz --resource-group NH-RG --ip-forwarding true
+
+
+## ── PHASE 2: Verify UDR is Working ─────────────────────────────────────────
+## Run from: gw-fw (via SSH from admin-pc)
+
+# Verify OS-level IP forwarding is enabled
+sysctl net.ipv4.ip_forward
+# Expected: net.ipv4.ip_forward = 1
+
+# Capture forwarded packets to confirm gw-fw is in data path
+# (run on gw-fw while client pings srv-web)
+sudo tcpdump -i any icmp -n
+# Look for: IN on eth0, OUT on eth1 — confirms forwarding
+# TTL on client side drops from 64 (TD1, direct) to 63 (TD2, via gw-fw)
+
+
+## ── PHASE 3: nftables Implementation ────────────────────────────────────────
+## Run from: gw-fw (sudo -i or sudo nft ...)
+
+# Verify nft is available
+nft --version
+
+# Check what exists before starting (Azure waagent table)
+sudo nft list ruleset
+
+# Step 1: Create forward chain with DROP policy first
+# (Safe: forward chain only affects transit traffic, not our SSH session)
+sudo nft add table inet filter
+sudo nft add chain inet filter forward '{ type filter hook forward priority filter; policy drop; }'
+
+# Step 2: Create input chain WITHOUT drop policy yet (safety)
+sudo nft add chain inet filter input '{ type filter hook input priority filter; }'
+
+# Step 3: Create output chain (accept all outbound from gw-fw)
+sudo nft add chain inet filter output '{ type filter hook output priority filter; policy accept; }'
+
+# Step 4: Add forward rules (order matters — stateful first)
+sudo nft add rule inet filter forward ct state established,related counter accept
+sudo nft add rule inet filter forward ip saddr 10.10.10.0/24 ip daddr 10.10.20.10 tcp dport 80 counter accept
+sudo nft add rule inet filter forward ip saddr 10.10.10.0/24 ip daddr 10.10.20.10 tcp dport 22 counter accept
+sudo nft add rule inet filter forward 'ip saddr 10.10.10.0/24 ip daddr 10.10.20.0/24 icmp type echo-request limit rate 5/second counter accept'
+sudo nft add rule inet filter forward 'counter log prefix "NFT_FWD_DENY " limit rate 10/minute'
+
+# Step 5: Add ALL input allow rules BEFORE setting drop policy
+sudo nft add rule inet filter input iif lo counter accept
+sudo nft add rule inet filter input ct state established,related counter accept
+sudo nft add rule inet filter input ip saddr 10.10.10.0/24 tcp dport 22 counter accept
+sudo nft add rule inet filter input ip saddr 89.30.39.100 tcp dport 22 counter accept
+sudo nft add rule inet filter input ip saddr 10.10.10.0/24 icmp type echo-request counter accept
+sudo nft add rule inet filter input 'counter log prefix "NFT_IN_DENY " limit rate 10/minute'
+
+# Step 6: NOW set input chain to drop policy (all allows are in place)
+sudo nft chain inet filter input '{ policy drop; }'
+
+# Add secondary admin IP (added during session after initial deployment)
+sudo nft add rule inet filter input ip saddr 92.184.117.191 tcp dport 22 counter accept
+
+# Verify full ruleset
+sudo nft list ruleset
+
+# Save counters before tests
+sudo nft list ruleset > /tmp/counters_before.txt
+
+
+## ── PHASE 4: Persistent Configuration ──────────────────────────────────────
+## Run from: gw-fw
+
+# Export current ruleset to nftables.conf for persistence across reboots
+sudo nft list ruleset > /etc/nftables.conf
+
+# Enable nftables service to auto-load on boot
+sudo systemctl enable nftables
+sudo systemctl start nftables
+
+# Verify service is active
+sudo systemctl status nftables
+
+
+## ── PHASE 5: Positive Tests (run from client VM) ──────────────────────────
+
+# P1 — HTTP to srv-web (TCP/80)
+curl -s -o /dev/null -w "%{http_code}" http://10.10.20.10
+
+# P2 — SSH to srv-web (TCP/22) — expect "Permission denied (publickey)"
+ssh -o ConnectTimeout=5 ubuntu@10.10.20.10
+
+# P3 — ICMP ping to srv-web (check TTL=63 for gw-fw in path proof)
+ping -c 4 10.10.20.10
+
+# P4 — ICMP ping to gw-fw LAN interface
+ping -c 4 10.10.10.4
+
+# P5 — SSH to gw-fw from admin-pc (run from admin-pc)
+ssh -i ~/.ssh/nh_key azure-user@<gw-fw-public-ip>
+
+# P6 — SSH to gw-fw from client LAN
+ssh -o ConnectTimeout=5 azure-user@10.10.10.4
+
+
+## ── PHASE 6: Negative Tests (run from client VM) ──────────────────────────
+
+# N1 — Telnet (TCP/23) — expect timeout
+nc -vz -w 3 10.10.20.10 23
+
+# N2 — MySQL (TCP/3306) — expect timeout
+nc -vz -w 3 10.10.20.10 3306
+
+# N3 — RDP (TCP/3389) — expect timeout
+nc -vz -w 3 10.10.20.10 3389
+
+# N4 — Unknown port (TCP/12345) — expect timeout
+nc -vz -w 3 10.10.20.10 12345
+
+# N5 — Alt-HTTP (TCP/8080) — expect timeout
+nc -vz -w 3 10.10.20.10 8080
+
+# N6 — DNS (UDP/53) — nc false positive, confirm via logs on gw-fw
+nc -vuz -w 3 10.10.20.10 53
+
+
+## ── PHASE 7: Evidence Collection (run from gw-fw) ──────────────────────────
+
+# Save counters after all tests
+sudo nft list ruleset > /tmp/counters_after.txt
+
+# Extract kernel logs for denied packets
+sudo journalctl -k --grep="NFT_FWD_DENY\|NFT_IN_DENY" --since "2026-03-05 09:00:00" > /tmp/deny_logs.txt
+
+# Copy evidence files to local machine (run from admin-pc)
+scp azure-user@<gw-fw-public-ip>:/tmp/counters_before.txt ./evidence/
+scp azure-user@<gw-fw-public-ip>:/tmp/counters_after.txt ./evidence/
+scp azure-user@<gw-fw-public-ip>:/tmp/deny_logs.txt ./evidence/

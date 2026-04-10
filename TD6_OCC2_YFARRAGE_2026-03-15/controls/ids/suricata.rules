@@ -1,0 +1,21 @@
+# ET Open Rules — Suricata 6.0.4
+#
+# These rules are managed by suricata-update and downloaded automatically
+# from https://rules.emergingthreats.net/open/suricata-6.0/emerging.rules.tar.gz
+#
+# At the time of the TD3 capture (2026-03-06), 48,795 signatures were loaded.
+# The ruleset includes the following categories (sample):
+#   - ET SCAN   — port scans, Nmap, reconnaissance
+#   - ET WEB    — web exploit patterns, SQLi, XSS
+#   - ET MALWARE — known C2 traffic, bot signatures
+#   - ET POLICY — policy violations (cleartext passwords, etc.)
+#
+# Rule that fired during testing:
+#   SID 2024364: ET SCAN Possible Nmap User-Agent Observed
+#   (alert tcp any any -> any any (msg:"ET SCAN Possible Nmap User-Agent Observed";
+#    flow:established,to_server; content:"Nmap Scripting Engine"; ... classtype:network-scan;)
+#
+# To reload rules:
+#   sudo suricata-update && sudo systemctl reload suricata
+#
+# Evidence of rule effectiveness: evidence/after/fast_log_nmap.txt

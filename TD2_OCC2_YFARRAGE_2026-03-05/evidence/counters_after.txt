@@ -1,0 +1,39 @@
+# Counters AFTER tests — gw-fw
+# Captured: 2026-03-05  Command: sudo nft list table inet filter | sudo tee /tmp/counters_after_final.txt
+# Host: gw-fw (10.10.10.4 / 10.10.20.4)
+# ============================================================
+# Key observations (forward chain):
+#   - established/related: 70 pkts — return traffic for all permitted sessions
+#   - TCP/80 (F01): 2 pkts — P1 HTTP curl test
+#   - TCP/22 (F02): 2 pkts — P2 SSH to srv-web
+#   - ICMP (F03): 1 pkt  — P3 ping to srv-web
+#   - TCP/443 (F04): 1 pkt — P6 HTTPS curl test (connection refused = no TLS yet, firewall passed)
+#   - NFT_FWD_DENY: 24 pkts — all negative tests N1–N6 dropped + DMZ tests
+# ============================================================
+
+table inet filter {
+	chain forward {
+		type filter hook forward priority filter; policy drop;
+		ct state established,related counter packets 70 bytes 16487 accept
+		ip saddr 10.10.10.0/24 ip daddr 10.10.20.10 tcp dport 80 counter packets 2 bytes 120 accept
+		ip saddr 10.10.10.0/24 ip daddr 10.10.20.10 tcp dport 22 counter packets 2 bytes 120 accept
+		ip saddr 10.10.10.0/24 ip daddr 10.10.20.0/24 icmp type echo-request limit rate 5/second counter packets 1 bytes 84 accept
+		ip saddr 10.10.10.0/24 ip daddr 10.10.20.10 tcp dport 443 counter packets 1 bytes 60 accept
+		counter packets 24 bytes 1285 log prefix "NFT_FWD_DENY " limit rate 10/minute
+	}
+
+	chain input {
+		type filter hook input priority filter; policy drop;
+		iif "lo" counter packets 233 bytes 31730 accept
+		ct state established,related counter packets 19779 bytes 3571714 accept
+		ip saddr 10.10.10.0/24 tcp dport 22 counter packets 1 bytes 60 accept
+		ip saddr 89.30.39.100 tcp dport 22 counter packets 6 bytes 360 accept
+		ip saddr 10.10.10.0/24 icmp type echo-request counter packets 1 bytes 84 accept
+		ip saddr 92.184.117.191 tcp dport 22 counter packets 0 bytes 0 accept
+		counter packets 32 bytes 2108 log prefix "NFT_IN_DENY " limit rate 10/minute
+	}
+
+	chain output {
+		type filter hook output priority filter; policy accept;
+	}
+}

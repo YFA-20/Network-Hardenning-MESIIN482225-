@@ -1,0 +1,35 @@
+INTERFACE SELECTION — TD3 Network Hardening
+===========================================
+Date: 2026-03-06
+Engineer: Youssouf FARRAGE — Group OCC2, ESILV 4th year, Major Cybersecurity & IOT Trust
+
+ARCHITECTURE DECISION: UTM MODE (Azure constraint)
+---------------------------------------------------
+The standard lab design places sensor-ids (10.10.20.50) in promiscuous mode on NH-DMZ,
+allowing it to passively capture all traffic on the segment.
+
+Microsoft Azure does NOT support promiscuous mode on virtual NICs. Enabling it on a VM
+has zero effect: the Azure vSwitch filters frames at the hypervisor level and delivers
+only unicast frames addressed to the VM's MAC.
+
+Decision: Run Suricata directly on gw-fw (the routing firewall), which natively sees
+ALL LAN↔DMZ traffic because it forwards every packet between the two segments.
+This is the standard UTM (Unified Threat Management) architecture.
+
+INTERFACES MONITORED
+--------------------
+Interface  Zone    IP Address     Role
+---------  ------  -------------  --------------------------------
+eth0       NH-LAN  10.10.10.4     Captures traffic from client (10.10.10.10)
+eth1       NH-DMZ  10.10.20.4     Captures traffic to srv-web (10.10.20.10)
+
+Both interfaces configured in af-packet mode (cluster_flow, defrag enabled).
+Suricata sees each LAN↔DMZ flow on both interfaces (ingress + egress).
+
+VISIBILITY PROOF
+----------------
+TTL=63 on ping responses from 10.10.20.10 confirms packets traverse gw-fw
+(Linux default TTL=64, decremented by 1 at each hop → 1 hop = gw-fw).
+
+decoder.pkts counter increases in real time during traffic generation, confirming
+Suricata is actively capturing packets on both interfaces.

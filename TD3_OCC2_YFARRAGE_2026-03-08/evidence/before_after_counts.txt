@@ -1,0 +1,48 @@
+TUNING EVIDENCE — BEFORE / AFTER COUNTS
+========================================
+Date: 2026-03-06
+Trigger: sudo nmap -sS -sV -sC 10.10.20.10 (from client 10.10.10.10)
+Tuning action: suppress gen_id 1, sig_id 2210059
+File: /etc/suricata/threshold.conf
+
+BEFORE TUNING
+-------------
+Command: sudo grep -c "2024364\|2210059\|2013504" /var/log/suricata/fast.log
+
+  SID 2024364  (ET SCAN Possible Nmap User-Agent Observed)          : 29
+  SID 2210059  (SURICATA STREAM pkt seen on wrong thread)           : 49
+  SID 2013504  (ET POLICY GNU/Linux APT User-Agent Outbound)        :  6
+  -----------------------------------------------------------------------
+  TOTAL                                                              : 84
+
+AFTER TUNING
+------------
+Command: sudo grep -c "2024364\|2210059" /var/log/suricata/fast.log
+
+  SID 2024364  (ET SCAN Possible Nmap User-Agent Observed)          : 29
+  SID 2210059  (SURICATA STREAM pkt seen on wrong thread)           :  0  ← suppressed
+  -----------------------------------------------------------------------
+  TOTAL                                                              : 29
+
+NOISE REDUCTION: 49 → 0 alerts for SID 2210059 (100% reduction)
+SIGNAL PRESERVED: SID 2024364 unchanged (29/29)
+
+RATIONALE
+---------
+SID 2210059 is an internal Suricata diagnostic event, not a network threat.
+It fires when the same TCP flow is seen on both eth0 and eth1 simultaneously,
+which is expected in our UTM architecture where gw-fw monitors two interfaces.
+The event has no security value and buries real alerts (SID 2024364, Priority 1).
+
+Suppress (not threshold) was chosen because the signal is structurally impossible
+to be a real threat — it is an engine artifact, not adversary behaviour.
+
+BONUS DETECTIONS (in alerts_excerpt_after.txt)
+----------------------------------------------
+  SID 2400009  (ET DROP Spamhaus DROP Listed Traffic Inbound)       : 1
+    Source: 80.94.92.186:59125 → gw-fw:22 (external SSH brute-force attempt)
+  SID 2402000  (ET DROP Dshield Block Listed Source)                : 1
+    Source: 147.185.132.21:55720 → gw-fw:22 (external SSH brute-force attempt)
+
+These two alerts were not triggered manually — they are real-world threat intel matches
+against inbound SSH probes from IPs listed on Spamhaus DROP and Dshield block lists.

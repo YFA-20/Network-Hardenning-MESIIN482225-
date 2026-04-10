@@ -1,0 +1,3 @@
+        limit_req_zone $binary_remote_addr zone=api_limit:10m rate=1r/s;
+}
+

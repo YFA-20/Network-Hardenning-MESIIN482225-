@@ -1,0 +1,41 @@
+table inet filter {
+	chain forward {
+		type filter hook forward priority filter; policy drop;
+		ct state established,related counter packets 96 bytes 18671 accept
+		ip saddr 10.10.10.0/24 ip daddr 10.10.20.10 tcp dport 80 counter packets 2 bytes 120 accept
+		ip saddr 10.10.10.0/24 ip daddr 10.10.20.10 tcp dport 22 counter packets 2 bytes 120 accept
+		ip saddr 10.10.10.0/24 ip daddr 10.10.20.0/24 icmp type echo-request limit rate 5/second counter packets 3 bytes 252 accept
+		ip saddr 10.10.10.0/24 ip daddr 10.10.20.10 tcp dport 443 counter packets 1 bytes 60 accept
+		counter packets 24 bytes 1285 log prefix "NFT_FWD_DENY " limit rate 10/minute
+	}
+
+	chain input {
+		type filter hook input priority filter; policy drop;
+		iif "lo" counter packets 502 bytes 70648 accept
+		ct state established,related counter packets 146501 bytes 115451866 accept
+		ip saddr 10.10.10.0/24 tcp dport 22 counter packets 1 bytes 60 accept
+		ip saddr 89.30.39.100 tcp dport 22 counter packets 11 bytes 660 accept
+		ip saddr 10.10.10.0/24 icmp type echo-request counter packets 1 bytes 84 accept
+		ip saddr 92.184.117.191 tcp dport 22 counter packets 0 bytes 0 accept
+		counter packets 224 bytes 16882 log prefix "NFT_IN_DENY " limit rate 10/minute
+		ip saddr 46.193.65.246 tcp dport 22 accept
+		udp dport 500 counter packets 2 bytes 566 accept comment "IKE"
+		udp dport 4500 counter packets 1 bytes 320 accept comment "NAT-T"
+		ip protocol esp counter packets 0 bytes 0 accept comment "ESP"
+	}
+
+	chain output {
+		type filter hook output priority filter; policy accept;
+	}
+}
+table ip security {
+	chain OUTPUT {
+		type filter hook output priority 150; policy accept;
+		ip daddr 168.63.129.16 tcp dport 53 counter packets 0 bytes 0 accept
+		meta l4proto tcp ip daddr 168.63.129.16 meta skuid 0 counter packets 60699 bytes 32697962 accept
+		meta l4proto tcp ip daddr 168.63.129.16 ct state invalid,new counter packets 0 bytes 0 drop
+		meta l4proto tcp ip daddr 168.63.129.16 tcp dport 53 counter packets 0 bytes 0 accept
+		meta l4proto tcp ip daddr 168.63.129.16 skuid 0 counter packets 0 bytes 0 accept
+		meta l4proto tcp ip daddr 168.63.129.16 ct state invalid,new counter packets 0 bytes 0 drop
+	}
+}

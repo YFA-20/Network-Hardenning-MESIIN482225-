@@ -1,0 +1,6 @@
+# HSTS verification — srv-web (10.10.20.10)
+# Command: curl -vk https://10.10.20.10 2>&1 | grep -i strict
+# Date: 2026-03-11
+< Strict-Transport-Security: max-age=300
+# Result: HSTS header present — claim C-TLS-03 confirmed
+# Source: report.md §6 (TLS Hardening After)

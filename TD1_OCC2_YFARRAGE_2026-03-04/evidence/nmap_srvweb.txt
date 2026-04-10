@@ -1,0 +1,15 @@
+# nmap_srvweb.txt — transcribed from session output (2026-03-04)
+# Command: ssh nh-client "nmap -sS -sV -p 1-1000 10.10.20.10"
+# Run from: client (10.10.10.10) -> target: srv-web (10.10.20.10)
+
+Starting Nmap 7.93 ( https://nmap.org )
+Nmap scan report for 10.10.20.10
+Host is up (0.002s latency).
+Not shown: 998 filtered tcp ports (no-response)
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 8.9p1 Ubuntu 3ubuntu0 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    nginx 1.18.0 (Ubuntu)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Nmap done: 1 IP address (1 host up) scanned

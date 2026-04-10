@@ -1,0 +1,4 @@
+SQLi: 403
+BadUA: 403
+BadMethod: 405
+Normal: 200

@@ -1,0 +1,47 @@
+# TD5 — IPsec tunnel status — both gateways
+# Combined output for review — detailed files: ipsec_status_siteA.txt / ipsec_status_siteB.txt
+
+══════════════════════════════════════════════════
+  siteA-gw  (Azure · 10.10.99.5 · pip: 98.66.160.46)
+══════════════════════════════════════════════════
+
+Status of IKE charon daemon (strongSwan 5.9.5, Linux 6.8.0-1044-azure, x86_64):
+  uptime: 62 minutes, since Mar 14 11:37:01 2026
+Connections:
+site-to-site:  10.10.99.5...35.181.66.138  IKEv2
+site-to-site:   local:  [98.66.160.46] uses pre-shared key authentication
+site-to-site:   remote: [35.181.66.138] uses pre-shared key authentication
+site-to-site:   child:  10.10.10.0/24 === 10.10.20.0/24 TUNNEL
+Security Associations (1 up, 0 connecting):
+site-to-site[2]: ESTABLISHED 38 minutes ago, 10.10.99.5[98.66.160.46]...35.181.66.138[35.181.66.138]
+site-to-site[2]: IKEv2 SPIs: 853e1a3968c78fd8_i dbe533ea25f4bf2b_r*, pre-shared key reauthentication in 2 hours
+site-to-site[2]: IKE proposal: AES_CBC_256/HMAC_SHA2_256_128/PRF_HMAC_SHA2_256/MODP_2048
+site-to-site{1}:  INSTALLED, TUNNEL, reqid 1, ESP in UDP SPIs: cab7e97e_i c99d2fbf_o
+site-to-site{1}:  AES_CBC_256/HMAC_SHA2_256_128, 1176 bytes_i (14 pkts), 1176 bytes_o (14 pkts)
+site-to-site{1}:   10.10.10.0/24 === 10.10.20.0/24
+
+══════════════════════════════════════════════════
+  siteB-gw  (AWS · 10.10.99.4 · EIP: 35.181.66.138)
+══════════════════════════════════════════════════
+
+Status of IKE charon daemon (strongSwan 5.9.5, Linux 6.8.0-1046-aws, x86_64):
+  uptime: 39 minutes, since Mar 14 12:01:10 2026
+Connections:
+site-to-site:  10.10.99.4...98.66.160.46  IKEv2
+site-to-site:   local:  [35.181.66.138] uses pre-shared key authentication
+site-to-site:   remote: [98.66.160.46] uses pre-shared key authentication
+site-to-site:   child:  10.10.20.0/24 === 10.10.10.0/24 TUNNEL
+Security Associations (1 up, 0 connecting):
+site-to-site[1]: ESTABLISHED 39 minutes ago, 10.10.99.4[35.181.66.138]...98.66.160.46[98.66.160.46]
+site-to-site[1]: IKEv2 SPIs: 853e1a3968c78fd8_i* dbe533ea25f4bf2b_r, pre-shared key reauthentication in 2 hours
+site-to-site[1]: IKE proposal: AES_CBC_256/HMAC_SHA2_256_128/PRF_HMAC_SHA2_256/MODP_2048
+site-to-site{1}:  INSTALLED, TUNNEL, reqid 1, ESP in UDP SPIs: c99d2fbf_i cab7e97e_o
+site-to-site{1}:  AES_CBC_256/HMAC_SHA2_256_128, 1176 bytes_i (14 pkts), 1176 bytes_o (14 pkts)
+site-to-site{1}:   10.10.20.0/24 === 10.10.10.0/24
+
+══════════════════════════════════════════════════
+  Tunnel ESTABLISHED — both IKE_SA and CHILD_SA INSTALLED
+  Proposal: AES_CBC_256 / HMAC_SHA2_256_128 / MODP_2048
+  SPI symmetry confirmed (i/o swap between sides)
+  Scope: 10.10.10.0/24 === 10.10.20.0/24 only
+══════════════════════════════════════════════════

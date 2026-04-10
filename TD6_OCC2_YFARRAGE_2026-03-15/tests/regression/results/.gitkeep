@@ -1,0 +1,8 @@
+# Timestamped regression run outputs are stored here.
+# Each run of tests/regression/run_all.sh creates a subdirectory:
+#   results/YYYYMMDDTHHmmss/
+#     SUMMARY.txt
+#     R1_firewall.txt
+#     R2_tls.txt
+#     R3_remote_access.txt
+#     R4_detection.txt

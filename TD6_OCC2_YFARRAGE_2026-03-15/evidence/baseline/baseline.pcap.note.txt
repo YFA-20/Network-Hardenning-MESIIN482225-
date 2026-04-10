@@ -1,0 +1,5 @@
+# baseline.pcap — NOT AVAILABLE
+# Azure hypervisor blocks promiscuous mode on guest VMs.
+# Raw packet capture (.pcap) of the baseline is not producible in this environment.
+# Compensating evidence: nmap_srvweb.txt (open ports baseline) + counters_before.txt (nftables baseline state)
+# Architecture decision: UTM mode documented in controls/ids/interface_selection.txt

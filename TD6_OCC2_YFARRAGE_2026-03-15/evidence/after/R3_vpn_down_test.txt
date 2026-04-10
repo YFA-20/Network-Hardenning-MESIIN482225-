@@ -1,0 +1,43 @@
+=== C-VPN-03 — SSH without VPN should fail ===
+Date: Wed Mar 18 12:08:13 UTC 2026
+
+--- Step 1: bringing tunnel DOWN ---
+deleting IKE_SA site-to-site[6] between 10.10.99.5[98.66.160.46]...35.181.66.138[35.181.66.138]
+sending DELETE for IKE_SA site-to-site[6]
+generating INFORMATIONAL request 2 [ D ]
+sending packet: from 10.10.99.5[4500] to 35.181.66.138[4500] (80 bytes)
+received packet: from 35.181.66.138[4500] to 10.10.99.5[4500] (80 bytes)
+parsed INFORMATIONAL response 2 [ ]
+IKE_SA deleted
+IKE_SA [6] closed successfully
+
+--- Step 2: SSH attempt WITHOUT tunnel (should fail) ---
+ssh: connect to host 10.10.20.10 port 22: Connection timed out
+[EXPECTED] Connection failed — no route to 10.10.20.10 without tunnel
+
+--- Step 3: bringing tunnel UP ---
+initiating IKE_SA site-to-site[7] to 35.181.66.138
+generating IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) N(FRAG_SUP) N(HASH_ALG) N(REDIR_SUP) ]
+sending packet: from 10.10.99.5[500] to 35.181.66.138[500] (464 bytes)
+received packet: from 35.181.66.138[500] to 10.10.99.5[500] (472 bytes)
+parsed IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) N(FRAG_SUP) N(HASH_ALG) N(CHDLESS_SUP) N(MULT_AUTH) ]
+selected proposal: IKE:AES_CBC_256/HMAC_SHA2_256_128/PRF_HMAC_SHA2_256/MODP_2048
+local host is behind NAT, sending keep alives
+remote host is behind NAT
+authentication of '98.66.160.46' (myself) with pre-shared key
+establishing CHILD_SA site-to-site{7}
+generating IKE_AUTH request 1 [ IDi N(INIT_CONTACT) IDr AUTH SA TSi TSr N(MOBIKE_SUP) N(ADD_4_ADDR) N(MULT_AUTH) N(EAP_ONLY) N(MSG_ID_SYN_SUP) ]
+sending packet: from 10.10.99.5[4500] to 35.181.66.138[4500] (288 bytes)
+received packet: from 35.181.66.138[4500] to 10.10.99.5[4500] (256 bytes)
+parsed IKE_AUTH response 1 [ IDr AUTH SA TSi TSr N(MOBIKE_SUP) N(ADD_4_ADDR) N(ADD_4_ADDR) ]
+authentication of '35.181.66.138' with pre-shared key successful
+IKE_SA site-to-site[7] established between 10.10.99.5[98.66.160.46]...35.181.66.138[35.181.66.138]
+scheduling reauthentication in 10247s
+maximum IKE_SA lifetime 10787s
+selected proposal: ESP:AES_CBC_256/HMAC_SHA2_256_128/NO_EXT_SEQ
+CHILD_SA site-to-site{7} established with SPIs c0a10317_i cfed1380_o and TS 10.10.10.0/24 === 10.10.20.0/24
+peer supports MOBIKE
+connection 'site-to-site' established successfully
+
+--- Step 4: SSH attempt WITH tunnel (should succeed) ---
+SSH_VPN_OK

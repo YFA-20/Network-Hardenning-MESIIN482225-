@@ -1,0 +1,64 @@
+# nftables ruleset — gw-fw
+# Exported: 2026-03-05  Command: sudo nft list table inet filter | sudo tee /tmp/counters_after_final.txt
+# Host: gw-fw (10.10.10.4 / 10.10.20.4)
+#
+# NOTE: The pre-existing "table ip security" (Azure waagent / IMDS) was
+# NOT modified and is not shown here. Only the custom "table inet filter"
+# created during TD2 is documented.
+#
+# IMPORTANT: TCP/443 rule (F04) was inserted BEFORE the deny log counter
+# using: nft insert rule inet filter forward handle <deny_handle>
+# This ensures HTTPS traffic is accepted without triggering NFT_FWD_DENY.
+
+table inet filter {
+	chain forward {
+		type filter hook forward priority filter; policy drop;
+
+		# F00 — stateful: allow return traffic (established/related sessions)
+		ct state established,related counter packets 70 bytes 16487 accept
+
+		# F01 — client LAN → srv-web HTTP
+		ip saddr 10.10.10.0/24 ip daddr 10.10.20.10 tcp dport 80 counter packets 2 bytes 120 accept
+
+		# F02 — client LAN → srv-web SSH
+		ip saddr 10.10.10.0/24 ip daddr 10.10.20.10 tcp dport 22 counter packets 2 bytes 120 accept
+
+		# F03 — client LAN → DMZ ICMP ping (rate-limited 5/s)
+		ip saddr 10.10.10.0/24 ip daddr 10.10.20.0/24 icmp type echo-request limit rate 5/second counter packets 1 bytes 84 accept
+
+		# F04 — client LAN → srv-web HTTPS (prepared for TD4 TLS)
+		ip saddr 10.10.10.0/24 ip daddr 10.10.20.10 tcp dport 443 counter packets 1 bytes 60 accept
+
+		# DEFAULT DENY — log then drop (rate-limited to avoid log flooding)
+		counter packets 24 bytes 1285 log prefix "NFT_FWD_DENY " limit rate 10/minute
+	}
+
+	chain input {
+		type filter hook input priority filter; policy drop;
+
+		# M05 — loopback always allowed
+		iif "lo" counter packets 233 bytes 31730 accept
+
+		# M06 — stateful: established/related sessions
+		ct state established,related counter packets 19779 bytes 3571714 accept
+
+		# M01 — LAN admin SSH to gw-fw
+		ip saddr 10.10.10.0/24 tcp dport 22 counter packets 1 bytes 60 accept
+
+		# M02 — admin-pc (89.30.39.100) SSH
+		ip saddr 89.30.39.100 tcp dport 22 counter packets 6 bytes 360 accept
+
+		# M04 — LAN diagnostic ping to gw-fw
+		ip saddr 10.10.10.0/24 icmp type echo-request counter packets 1 bytes 84 accept
+
+		# M03 — secondary admin IP (added during TD2 session)
+		ip saddr 92.184.117.191 tcp dport 22 counter packets 0 bytes 0 accept
+
+		# DEFAULT DENY — log then drop
+		counter packets 32 bytes 2108 log prefix "NFT_IN_DENY " limit rate 10/minute
+	}
+
+	chain output {
+		type filter hook output priority filter; policy accept;
+	}
+}

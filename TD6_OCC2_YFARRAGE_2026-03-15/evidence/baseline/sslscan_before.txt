@@ -1,0 +1,73 @@
+Version: 2.0.7
+OpenSSL 3.0.2 15 Mar 2022
+
+Connected to 10.10.20.10
+
+Testing SSL server 10.10.20.10 on port 443 using SNI name 10.10.20.10
+
+  SSL/TLS Protocols:
+SSLv2     disabled
+SSLv3     disabled
+TLSv1.0   disabled
+TLSv1.1   disabled
+TLSv1.2   enabled
+TLSv1.3   disabled
+
+  TLS Fallback SCSV:
+Server supports TLS Fallback SCSV
+
+  TLS renegotiation:
+Session renegotiation not supported
+
+  TLS Compression:
+OpenSSL version does not support compression
+Rebuild with zlib1g-dev package for zlib support
+
+  Heartbleed:
+TLSv1.2 not vulnerable to heartbleed
+
+  Supported Server Cipher(s):
+Preferred TLSv1.2  256 bits  ECDHE-RSA-AES256-GCM-SHA384   Curve 25519 DHE 253
+Accepted  TLSv1.2  256 bits  ECDHE-RSA-CHACHA20-POLY1305   Curve 25519 DHE 253
+Accepted  TLSv1.2  256 bits  ECDHE-ARIA256-GCM-SHA384      Curve 25519 DHE 253
+Accepted  TLSv1.2  128 bits  ECDHE-RSA-AES128-GCM-SHA256   Curve 25519 DHE 253
+Accepted  TLSv1.2  128 bits  ECDHE-ARIA128-GCM-SHA256      Curve 25519 DHE 253
+Accepted  TLSv1.2  256 bits  ECDHE-RSA-AES256-SHA384       Curve 25519 DHE 253
+Accepted  TLSv1.2  256 bits  ECDHE-RSA-CAMELLIA256-SHA384  Curve 25519 DHE 253
+Accepted  TLSv1.2  128 bits  ECDHE-RSA-AES128-SHA256       Curve 25519 DHE 253
+Accepted  TLSv1.2  128 bits  ECDHE-RSA-CAMELLIA128-SHA256  Curve 25519 DHE 253
+Accepted  TLSv1.2  256 bits  ECDHE-RSA-AES256-SHA          Curve 25519 DHE 253
+Accepted  TLSv1.2  128 bits  ECDHE-RSA-AES128-SHA          Curve 25519 DHE 253
+Accepted  TLSv1.2  256 bits  AES256-GCM-SHA384            
+Accepted  TLSv1.2  256 bits  AES256-CCM8                  
+Accepted  TLSv1.2  256 bits  AES256-CCM                   
+Accepted  TLSv1.2  256 bits  ARIA256-GCM-SHA384           
+Accepted  TLSv1.2  128 bits  AES128-GCM-SHA256            
+Accepted  TLSv1.2  128 bits  AES128-CCM8                  
+Accepted  TLSv1.2  128 bits  AES128-CCM                   
+Accepted  TLSv1.2  128 bits  ARIA128-GCM-SHA256           
+Accepted  TLSv1.2  256 bits  AES256-SHA256                
+Accepted  TLSv1.2  256 bits  CAMELLIA256-SHA256           
+Accepted  TLSv1.2  128 bits  AES128-SHA256                
+Accepted  TLSv1.2  128 bits  CAMELLIA128-SHA256           
+Accepted  TLSv1.2  256 bits  AES256-SHA                   
+Accepted  TLSv1.2  256 bits  CAMELLIA256-SHA              
+Accepted  TLSv1.2  128 bits  AES128-SHA                   
+Accepted  TLSv1.2  128 bits  CAMELLIA128-SHA              
+
+  Server Key Exchange Group(s):
+TLSv1.2  128 bits  secp256r1 (NIST P-256)
+TLSv1.2  192 bits  secp384r1 (NIST P-384)
+TLSv1.2  260 bits  secp521r1 (NIST P-521)
+TLSv1.2  128 bits  x25519
+TLSv1.2  224 bits  x448
+
+  SSL Certificate:
+Signature Algorithm: sha256WithRSAEncryption
+RSA Key Strength:    2048
+
+Subject:  td4.local
+Issuer:   td4.local
+
+Not valid before: Mar 11 12:45:21 2026 GMT
+Not valid after:  Mar 18 12:45:21 2026 GMT

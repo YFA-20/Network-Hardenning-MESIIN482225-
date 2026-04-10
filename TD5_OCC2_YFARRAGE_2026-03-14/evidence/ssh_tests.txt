@@ -1,0 +1,29 @@
+# TD5 — SSH Hardening Tests (siteA-client → siteB-srv)
+# Run from siteA-client (10.10.10.10) via IPsec tunnel
+
+## Test 1 — Positive: key login (must succeed)
+$ ssh -i ~/.ssh/nh_lab_key awsuser@10.10.20.10 "echo SSH_KEY_OK"
+SSH_KEY_OK
+
+# Auth.log confirmation (siteB-srv, 2026-03-14 11:16:48):
+# Accepted publickey for awsuser from 10.10.20.4 port 34706 ssh2: ED25519 SHA256:TJd0H81dkHZCDKn//p8lGWRnsbNRv/dsDkMBlo7mQg4
+
+## Test 2 — Negative: password auth disabled (must fail)
+$ ssh -o PubkeyAuthentication=no awsuser@10.10.20.10
+awsuser@10.10.20.10: Permission denied (publickey).
+
+# Auth.log confirmation (siteB-srv, 2026-03-14 11:26:34):
+# Connection closed by authenticating user awsuser 10.10.20.4 port 50066 [preauth]
+
+## Test 3 — Negative: root login blocked (must fail)
+$ ssh -i ~/.ssh/nh_lab_key root@10.10.20.10
+root@10.10.20.10: Permission denied (publickey).
+
+# Auth.log confirmation (siteB-srv, 2026-03-14 11:26:49):
+# User root from 10.10.20.4 not allowed because not listed in AllowUsers
+# Connection closed by invalid user root 10.10.20.4 port 52010 [preauth]
+
+## Summary
+# T01 (key login): PASS
+# T02 (password auth blocked): PASS
+# T03 (root blocked): PASS

@@ -1,0 +1,23 @@
+Date: 3/6/2026 -- 09:39:01 (uptime: 0d, 00h 03m 52s)
+decoder.pkts                                  | Total                     | 1691
+Date: 3/6/2026 -- 09:39:09 (uptime: 0d, 00h 04m 00s)
+decoder.pkts                                  | Total                     | 1726
+Date: 3/6/2026 -- 09:39:17 (uptime: 0d, 00h 04m 08s)
+decoder.pkts                                  | Total                     | 1796
+Date: 3/6/2026 -- 09:39:25 (uptime: 0d, 00h 04m 16s)
+decoder.pkts                                  | Total                     | 1831
+Date: 3/6/2026 -- 09:39:33 (uptime: 0d, 00h 04m 24s)
+decoder.pkts                                  | Total                     | 1866
+Date: 3/6/2026 -- 09:39:41 (uptime: 0d, 00h 04m 32s)
+decoder.pkts                                  | Total                     | 1979
+Date: 3/6/2026 -- 09:39:49 (uptime: 0d, 00h 04m 40s)
+decoder.pkts                                  | Total                     | 2014
+Date: 3/6/2026 -- 09:39:57 (uptime: 0d, 00h 04m 48s)
+decoder.pkts                                  | Total                     | 2049
+Date: 3/6/2026 -- 09:40:05 (uptime: 0d, 00h 04m 56s)
+decoder.pkts                                  | Total                     | 2133
+Date: 3/6/2026 -- 09:40:13 (uptime: 0d, 00h 05m 04s)
+decoder.pkts                                  | Total                     | 2169
+---
+curl http://10.10.20.10/ => HTTP 200 nginx (client Kali 10.10.10.10)
+ping 10.10.20.10 => TTL=63 (prouve routage via gw-fw, TTL decremente de 1)

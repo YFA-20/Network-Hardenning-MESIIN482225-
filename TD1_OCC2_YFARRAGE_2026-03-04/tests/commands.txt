@@ -1,0 +1,110 @@
+# commands.txt — TD1 exact commands log
+# Author: Youssouf FARRAGE | Date: 2026-03-04
+# All commands run from Kali (physical workstation) unless noted
+
+# ─────────────────────────────────────────────
+# PRE-FLIGHT CHECKS
+# ─────────────────────────────────────────────
+
+# 1. Confirm all VMs running (Azure Cloud Shell)
+az vm list -g rg-nh-lab --show-details --query "[].{Name:name, State:powerState}" -o table
+
+# 2. Check IPs assigned (Azure Cloud Shell)
+az vm list-ip-addresses -g rg-nh-lab -o table
+
+# 3. Confirm IP forwarding on gw-fw
+ssh nh-gw "sysctl net.ipv4.ip_forward"
+# Expected: net.ipv4.ip_forward = 1
+
+# 4. Confirm client → gw-fw reachability
+ssh nh-client "ping -c 4 10.10.10.4"
+# Expected: 4/4 packets received, ~1–3ms RTT
+
+# 5. Confirm client → srv-web reachability
+ssh nh-client "ping -c 4 10.10.20.10"
+# Expected: 4/4 packets received
+
+# 6. Confirm nginx running and serving HTTP
+ssh nh-client "curl -s -o /dev/null -w '%{http_code}' http://10.10.20.10"
+# Expected: 200
+
+# ─────────────────────────────────────────────
+# PART A — ASSET INVENTORY
+# ─────────────────────────────────────────────
+
+# 7. gw-fw inventory
+ssh nh-gw "hostname && ip addr && ip route && ss -tulpn"
+
+# 8. client inventory
+ssh nh-client "hostname && ip addr && ip route && ss -tulpn"
+
+# 9. srv-web inventory
+ssh nh-srvweb "hostname && ip addr && ip route && ss -tulpn"
+
+# ─────────────────────────────────────────────
+# PART C — REACHABILITY VALIDATION
+# ─────────────────────────────────────────────
+
+# 10. Confirm services listening on srv-web
+ssh nh-srvweb "ss -tulpn"
+# Expected: :22 (sshd), :80 (nginx)
+
+# 11. HTTP connectivity test
+ssh nh-client "curl -v http://10.10.20.10"
+# Expected: HTTP/1.1 200 OK, nginx default page
+
+# 12. ICMP connectivity test
+ssh nh-client "ping -c 4 10.10.20.10"
+# Expected: 4/4 received
+
+# 13. Nmap defensive scan (client → srv-web, ports 1–1000)
+ssh nh-client "nmap -sS -sV -p 1-1000 10.10.20.10"
+# Expected: 22/tcp open ssh, 80/tcp open http, 998 filtered
+# NOTE: output not saved to file during session — re-run required:
+# ssh nh-client "nmap -sS -sV -p 1-1000 10.10.20.10 -oN /tmp/nmap_srvweb.txt"
+# scp nh-client:/tmp/nmap_srvweb.txt evidence/nmap_srvweb.txt
+
+# ─────────────────────────────────────────────
+# PART D — BASELINE CAPTURE
+# ─────────────────────────────────────────────
+
+# 14. Start tcpdump on gw-fw (Terminal 1 — interactive)
+ssh nh-gw
+sudo tcpdump -i any -w /tmp/baseline.pcap -nn
+# Leave running, switch to Terminal 2
+
+# 15. Generate traffic from client (Terminal 2)
+ssh nh-client "curl http://10.10.20.10"
+ssh nh-client "ping -c 4 10.10.20.10"
+
+# 16. Stop tcpdump (Terminal 1)
+# Press Ctrl+C
+# Note packets captured count
+
+# 17. Retrieve pcap
+scp nh-gw:/tmp/baseline.pcap evidence/baseline.pcap
+
+# 18. Quick pcap analysis
+tcpdump -r evidence/baseline.pcap -nn | wc -l
+# Result: 874 packets
+
+# 19. Filter admin SSH traffic
+tcpdump -r evidence/baseline.pcap -nn 'tcp port 22 and host 89.30.39.100'
+
+# 20. Filter external brute-force
+tcpdump -r evidence/baseline.pcap -nn 'src host 146.190.237.210 or src host 104.248.85.160 or src host 64.227.160.12'
+
+# 21. Verify LAN→DMZ traffic absence (confirms Azure UDR issue)
+tcpdump -r evidence/baseline.pcap -nn 'host 10.10.10.10 and host 10.10.20.10'
+# Expected: 0 packets (Risk R03)
+
+# ─────────────────────────────────────────────
+# SHUTDOWN
+# ─────────────────────────────────────────────
+
+# 22. Deallocate all VMs (Azure Cloud Shell)
+az vm deallocate --ids $(az vm list -g rg-nh-lab --query "[].id" -o tsv) --no-wait
+
+# 23. Verify all deallocated
+az vm list -g rg-nh-lab --show-details --query "[].{Name:name, State:powerState}" -o table
+# Expected: all "VM deallocated"
